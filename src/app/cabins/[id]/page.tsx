@@ -1,36 +1,53 @@
 import { getCabin } from "@/app/_lib/data-service";
 import { EyeSlashIcon, MapPinIcon, UsersIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
+import { notFound } from "next/navigation";
+
 
 // PLACEHOLDER DATA
 
-export default async function Page({cabinId} : any) {
-  const cabin = await getCabin(cabinId) || [];
-  console.log(cabin);
- 
-  let data = {id: "", name: "", maxCapacity: "", regularPrice: "", discount: "", image: "", description:""};
-  cabin.image ? data = cabin : null;
-  // const { id, name, maxCapacity, regularPrice, discount, image, description, } =
-  //   cabin;
+type CabinDetailProps = {
+  params : {
+    id : string
+  }
+}
+
+export async function generateMetadata(props:CabinDetailProps){
+  const {params} = props;
+  const cabin = await getCabin(params.id);
+  if(!cabin) notFound()
+  return {
+    title: `Cabin ${cabin.name}`,
+    description: "The Wild Oasis Exercises",
+  }
+}
+export default async function CabinDetail(props:CabinDetailProps) {
+  const {params} = props;
+  const cabin = await getCabin(params.id);
+  if(!cabin) notFound();
+  const { id, name, maxCapacity, regularPrice, discount, image, description } =
+  cabin;
+  
+
   return (
     <div className="max-w-6xl mx-auto mt-8">
       <div className="grid grid-cols-[3fr_4fr] gap-20 border border-primary-800 py-3 px-10 mb-24">
         <div className="relative scale-[1.15] -translate-x-3">
-          <Image src={data.image} width={500} height={500} alt={`Cabin ${data.name}`} />
+          <Image src={image} width={500} height={500} alt={`Cabin ${name}`} />
         </div>
 
         <div>
           <h3 className="text-accent-100 font-black text-7xl mb-5 translate-x-[-254px] bg-primary-950 p-6 pb-1 w-[150%]">
-            Cabin {data.name}
+            Cabin {name}
           </h3>
 
-          <p className="text-lg text-primary-300 mb-10">{data.description}</p>
+          <p className="text-lg text-primary-300 mb-10">{description}</p>
 
           <ul className="flex flex-col gap-4 mb-7">
             <li className="flex gap-3 items-center">
               <UsersIcon className="h-5 w-5 text-primary-600" />
               <span className="text-lg">
-                For up to <span className="font-bold">{data.maxCapacity}</span>{" "}
+                For up to <span className="font-bold">{maxCapacity}</span>{" "}
                 guests
               </span>
             </li>
