@@ -2,15 +2,20 @@
 import CabinCard from "@/app/_components/CabinCard";
 import { getCabin, getCabins } from "../_lib/data-service";
 import { Metadata } from "next";
-import { Suspense } from "react";
+import React, { Suspense } from "react";
 import CabinList from "../_components/CabinList";
 import Spinner from "../_components/Spinner";
+import { useParams, useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "Cabins Page",
   description: "The Wild Oasis Exercises",
 };
+
 export default async function Page() {
+  
+
   // CHANGE
   return (
     <div>
