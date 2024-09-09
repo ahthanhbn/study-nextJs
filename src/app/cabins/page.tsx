@@ -1,21 +1,22 @@
-
 import CabinCard from "@/app/_components/CabinCard";
 import { getCabin, getCabins } from "../_lib/data-service";
 import { Metadata } from "next";
 import React, { Suspense } from "react";
 import CabinList from "../_components/CabinList";
 import Spinner from "../_components/Spinner";
-import { useParams, useSearchParams } from "next/navigation";
-import { usePathname } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "Cabins Page",
   description: "The Wild Oasis Exercises",
 };
+type CabinListProps = {
+  params: any;
+  searchParams :any
+}
 
-export default async function Page() {
-  
+export default async function Page({params, searchParams}:CabinListProps) {
 
+  const capacity = searchParams.capacity;
   // CHANGE
   return (
     <div>
@@ -30,8 +31,8 @@ export default async function Page() {
         away from home. The perfect spot for a peaceful, calm vacation. Welcome
         to paradise.
       </p>
-      <Suspense fallback={<Spinner/>}>
-        <CabinList/>
+      <Suspense fallback={<Spinner/>} key={capacity}>
+        <CabinList capacity = {capacity}/>
       </Suspense>
 
     </div>
