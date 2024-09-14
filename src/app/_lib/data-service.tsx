@@ -37,9 +37,10 @@ export async function getCabinPrice(id: any) {
 
 export const getCabins = async function () {
   const { data, error } = await supabase
-    .from("cabins")
-    .select("id, name, maxCapacity, regularPrice, discount, image")
-    .order("name");
+  .from("cabins")
+  .select("id, name, maxCapacity, regularPrice, discount, image")
+  .order("name");
+  // console.log(data);
 
   if (error) {
     console.error(error);
